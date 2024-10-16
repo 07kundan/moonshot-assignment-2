@@ -1,8 +1,8 @@
 "use client";
-import fetchData from "@/lib/fetchdata";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+
 import {
   BarChart,
   Bar,
@@ -20,15 +20,9 @@ interface DataItem {
   value: number;
 }
 
-// const data = [
-//   { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
-//   { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
-//   { name: "Page C", uv: 2000, pv: 9800, amt: 2290 },
-//   { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
-//   { name: "Page E", uv: 1890, pv: 4800, amt: 2181 },
-// ];
-
 function CategoryChart({ className }: { className: string }) {
+  const searchParams = useSearchParams(); // Get current query parameters
+
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [chartData, setChartData] = useState<DataItem[]>([
     { name: "", value: 0 },
@@ -37,9 +31,9 @@ function CategoryChart({ className }: { className: string }) {
     { name: "", value: 0 },
     { name: "", value: 0 },
   ]);
-  const pathname = usePathname();
 
   useEffect(() => {
+    // console.log("Router change detected:", searchParams.toString()); // Logs the URL changes
     const updateChartData = (newData: { [key: string]: number }) => {
       const updatedData = Object.keys(newData).map((key) => ({
         name: key,
@@ -47,15 +41,13 @@ function CategoryChart({ className }: { className: string }) {
       }));
       setChartData(updatedData);
     };
-
     async function apiFetch() {
       const res = await axios.get(`/api/category-chart`);
-      // console.log("response", res.data.data);
       updateChartData(res.data?.data);
     }
 
     apiFetch();
-  }, []);
+  }, [searchParams]);
 
   const handleMouseEnter = (index: number) => {
     setActiveIndex(index);
@@ -64,6 +56,7 @@ function CategoryChart({ className }: { className: string }) {
   const handleMouseLeave = () => {
     setActiveIndex(null);
   };
+
   return (
     <section className="h-full w-full flex pl-12 items-center">
       <ResponsiveContainer width="90%" height={600}>

@@ -1,7 +1,7 @@
 import fetchData from "@/lib/fetchdata";
 import { NextRequest, NextResponse } from "next/server";
 
-interface data {
+interface DataItem {
   date: string;
   age: string;
   gender: string;
@@ -13,7 +13,7 @@ interface data {
   F: number;
 }
 
-interface categoryInterface {
+interface CategoryInterface {
   A: number;
   B: number;
   C: number;
@@ -23,12 +23,11 @@ interface categoryInterface {
 }
 
 interface DataInterface {
-  data: data[];
+  data: DataItem[];
 }
 
-// accumulating the category value
-
-function accumulateData(data: data[]): categoryInterface {
+// Function to accumulate category values
+function accumulateData(data: DataItem[]): CategoryInterface {
   const result = {
     A: 0,
     B: 0,
@@ -37,6 +36,7 @@ function accumulateData(data: data[]): categoryInterface {
     E: 0,
     F: 0,
   };
+
   data.forEach((item) => {
     result.A += item.A || 0;
     result.B += item.B || 0;
@@ -45,96 +45,98 @@ function accumulateData(data: data[]): categoryInterface {
     result.E += item.E || 0;
     result.F += item.F || 0;
   });
+
   return result;
 }
 
-// filter data
+// Function to filter data based on optional gender, age, and date range
 function getFilteredData(
   data: DataInterface,
-  gender?: string,
-  age?: string,
+  gender?: string | null,
+  age?: string | null,
+  date?: string | null,
   dateRange?: {
-    startDate: string;
-    endDate: string;
+    startDate: string | null;
+    endDate: string | null;
   }
-): categoryInterface {
-  // steps-:
-  // fetch data for gender;
-  // fetch data for age;
-  // fetch data for dateRange;
-  // fetch filtered data for all parameter
-
-  // row data without filter
-  if (!(gender && age && dateRange)) {
-    return accumulateData(data.data);
+): CategoryInterface {
+  let filteredData = data.data;
+  // Filter by gender if present
+  if (gender) {
+    filteredData = filteredData.filter((item) => item.gender === gender);
   }
 
-  // based on gender
-  if (gender && !age && dateRange) {
-    const filteredData = data.data.filter((item) => item.gender === gender);
-    return accumulateData(filteredData);
-  }
-
-  // based on age
-  if (age && !gender && !dateRange) {
+  // Filter by age if present
+  if (age) {
     if (age === ">25") {
-      const filteredData = data.data.filter((item) => item.age === ">=25");
-      return accumulateData(filteredData);
+      filteredData = filteredData.filter((item) => item.age === ">=25");
+    } else {
+      filteredData = filteredData.filter((item) => item.age === "15-25");
     }
-    const filteredData = data.data.filter((item) => item.age === "15-25");
-    return accumulateData(filteredData);
   }
 
-  //   based on dateRange
-  if (dateRange && !age && !gender) {
+  if (date) {
+    filteredData = filteredData.filter((item) => {
+      const filterDate = new Date(date);
+      const entryDate = new Date(item.date);
+      return entryDate >= filterDate;
+    });
+  }
+
+  // Filter by date range if present
+  if (dateRange && dateRange.startDate && dateRange.endDate) {
     const start = new Date(dateRange.startDate);
     const end = new Date(dateRange.endDate);
 
-    const dateFilteredData = data.data.filter((item) => {
+    filteredData = filteredData.filter((item) => {
       const entryDate = new Date(item.date);
-      return entryDate >= start && entryDate <= end; // Include entries within the date range
+      return entryDate >= start && entryDate <= end;
     });
-    return accumulateData(dateFilteredData);
   }
 
-  //   based on all parameter
-  const start = new Date(dateRange.startDate);
-  const end = new Date(dateRange.endDate);
-  const result = data.data.filter((item) => {
-    const entryDate = new Date(item.date);
-    const isWithinDateRange = entryDate >= start && entryDate <= end;
-    const isMatchingAge = age ? item.age === age : true;
-    const isMatchingGender = gender ? item.gender === gender : true;
-    return isWithinDateRange && isMatchingAge && isMatchingGender;
-  });
-
-  return accumulateData(result);
+  // Return accumulated result of the filtered data
+  return accumulateData(filteredData);
 }
 
 export async function GET(req: NextRequest) {
-  const data: DataInterface = await fetchData();
-  let responseData;
   try {
-    responseData = getFilteredData(data);
+    // console.log(req.headers.get("referer"));
+    const url = req.headers.get("referer");
+    const urlObj = new URL(url as string);
+    // console.log(urlObj);
+    const params = new URLSearchParams(urlObj.search);
+    const startDate: string | null = params.get("startDate");
+    const endDate: string | null = params.get("endDate");
+    const dateRange = {
+      startDate: startDate || null,
+      endDate: endDate || null,
+    };
+    const gender: string | null = params.get("gender") || null;
+    const age: string | null = params.get("age") || null;
+    const date: string | null = params.get("date") || null;
+    // Fetch data
+    const data: DataInterface = await fetchData();
+
+    console.log({ gender, age, date, dateRange });
+    // Filter data
+    const responseData = getFilteredData(data, gender, age, date, dateRange);
     // console.log(responseData);
     return NextResponse.json(
       {
         data: responseData,
         success: true,
-        message: "fetched successfully",
+        message: "Fetched successfully",
       },
       { status: 200 }
     );
   } catch (error) {
-    console.log("error while getting data", error);
+    console.error("Error while getting data:", error);
     return NextResponse.json(
       {
         success: false,
-        message: "error while filtering data",
+        message: "Error while filtering data",
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }
