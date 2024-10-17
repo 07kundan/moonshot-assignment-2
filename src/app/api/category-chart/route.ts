@@ -93,17 +93,14 @@ function getFilteredData(
       return entryDate >= start && entryDate <= end;
     });
   }
-
   // Return accumulated result of the filtered data
   return accumulateData(filteredData);
 }
 
 export async function GET(req: NextRequest) {
   try {
-    // console.log(req.headers.get("referer"));
     const url = req.headers.get("referer");
     const urlObj = new URL(url as string);
-    // console.log(urlObj);
     const params = new URLSearchParams(urlObj.search);
     const startDate: string | null = params.get("startDate");
     const endDate: string | null = params.get("endDate");
@@ -117,10 +114,8 @@ export async function GET(req: NextRequest) {
     // Fetch data
     const data: DataInterface = await fetchData();
 
-    console.log({ gender, age, date, dateRange });
     // Filter data
     const responseData = getFilteredData(data, gender, age, date, dateRange);
-    // console.log(responseData);
     return NextResponse.json(
       {
         data: responseData,

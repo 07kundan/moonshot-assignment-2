@@ -1,8 +1,12 @@
 import { CategoryChart } from "@/components";
 import React from "react";
 
-function page() {
-  return <div className=" h-screen"></div>;
+function page({ className }: { className: string }) {
+  return (
+    <div>
+      <CategoryChart className={className} />
+    </div>
+  );
 }
 
 export default page;

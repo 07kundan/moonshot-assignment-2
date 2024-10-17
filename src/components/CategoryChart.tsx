@@ -14,6 +14,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { cn } from "@/lib/utils";
 
 interface DataItem {
   name: string;
@@ -33,7 +34,6 @@ function CategoryChart({ className }: { className: string }) {
   ]);
 
   useEffect(() => {
-    // console.log("Router change detected:", searchParams.toString()); // Logs the URL changes
     const updateChartData = (newData: { [key: string]: number }) => {
       const updatedData = Object.keys(newData).map((key) => ({
         name: key,
@@ -58,8 +58,8 @@ function CategoryChart({ className }: { className: string }) {
   };
 
   return (
-    <section className="h-full w-full flex pl-12 items-center">
-      <ResponsiveContainer width="90%" height={600}>
+    <section className={cn(className, "")}>
+      <ResponsiveContainer width="95%" height={600}>
         <BarChart
           data={chartData}
           layout="vertical"
@@ -72,10 +72,10 @@ function CategoryChart({ className }: { className: string }) {
             type="category"
             padding={{ top: 20, bottom: 20 }}
           />
-          <Tooltip
+          {/* <Tooltip
             contentStyle={{ backgroundColor: "blue", color: "yellow" }} // Dark background with white text
             cursor={{ fill: "rgba(255, 0, 0, 0.1)" }}
-          />
+          /> */}
           <Legend />
           <Bar dataKey="value" onMouseOut={handleMouseLeave}>
             {chartData.map((entry, index) => (
