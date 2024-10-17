@@ -17,11 +17,11 @@ function SideBar({ className }: { className: string }) {
     if (filter === "Today") {
       query.set("date", todayIn2022.toISOString()); // Today's date in ISO 8601 format
     } else if (filter === "Yesterday") {
-      const yesterday = todayIn2022
+      const yesterday = todayIn2022;
       yesterday.setDate(yesterday.getDate() - 1);
       query.set("date", yesterday.toISOString()); // Yesterday's date
     } else if (filter === "Last 7 Days") {
-      const lastWeek = todayIn2022
+      const lastWeek = todayIn2022;
       lastWeek.setDate(lastWeek.getDate() - 7); // Last week date in 2022
       query.set("startDate", lastWeek.toISOString());
       query.set("endDate", todayIn2022.toISOString()); // Last 7 days range in 2022
@@ -30,10 +30,9 @@ function SideBar({ className }: { className: string }) {
       query.set("startDate", firstDayOfMonth.toISOString());
       query.set("endDate", todayIn2022.toISOString()); // First day of the month to today's date in 2022
     }
-  
+
     router.push(`${pathname}?${query.toString()}`);
   };
-  
 
   const handleGenderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const gender = e.target.value;
@@ -50,25 +49,33 @@ function SideBar({ className }: { className: string }) {
   };
 
   return (
-    <div className={cn("flex justify-center pt-20", className)}>
+    <div
+      className={cn(
+        "flex justify-center pt-20 bg-zinc-300 border-r border-zinc-600",
+        className
+      )}
+    >
       <ul className="text-xl px-6 w-full space-y-3">
         {["Today", "Yesterday", "Last 7 Days", "This month"].map((item) => (
           <li
             key={item}
-            className="hover:bg-zinc-700/60 pl-8 py-2 rounded-lg"
+            className="hover:bg-zinc-400/60 pl-8 py-2 rounded-lg font-bold"
             onClick={() => handleFilterClick(item)}
           >
             <button className="w-full text-left">{item}</button>
           </li>
         ))}
 
-        <li className="hover:bg-zinc-700/60 pl-8 py-2 rounded-lg">
-          <button className="w-full text-left" onClick={() => handleFilterClick("Custom Range")}>
+        <li className="hover:bg-zinc-400/60 pl-8 py-2 rounded-lg font-bold">
+          <button
+            className="w-full text-left"
+            onClick={() => handleFilterClick("Custom Range")}
+          >
             Custom Range
           </button>
         </li>
 
-        <li className="pl-8 py-2 rounded-lg bg-lime-900">
+        <li className="pl-8 py-2 rounded-lg font-bold">
           <select
             className="w-3/4 rounded-lg py-1 bg-transparent focus:outline-none focus:border-blue-500"
             name="gender"
@@ -84,7 +91,7 @@ function SideBar({ className }: { className: string }) {
           </select>
         </li>
 
-        <li className="pl-8 py-2 rounded-lg">
+        <li className="pl-8 py-2 rounded-lg font-bold">
           <select
             className="w-3/4 rounded-lg py-1 bg-transparent focus:outline-none focus:border-blue-500"
             name="age"
@@ -96,7 +103,7 @@ function SideBar({ className }: { className: string }) {
               Age
             </option>
             <option value="15-25">15-25</option>
-            <option value=">25">>25</option>
+            <option value=">25">&gt;25</option>
           </select>
         </li>
       </ul>

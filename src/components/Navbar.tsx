@@ -10,7 +10,7 @@ const Navbar = () => {
   const user: User = session?.user as User;
 
   return (
-    <nav className="p-4 md:py-4 md:px-24 shadow-md text-black">
+    <nav className="p-4 md:py-4 md:px-24 text-black">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <a href="#" className="text-xl font-bold mb-4 md:mb-0">
           Chart
@@ -20,7 +20,7 @@ const Navbar = () => {
             <span className="mr-4">Welcome, {user.username || user.email}</span>
             <Button
               onClick={() => signOut()}
-              className="w-full md:w-auto bg-slate-100 text-black"
+              className=" bg-zinc-200/70 hover:bg-zinc-300/70 border border-zinc-600 font-bold"
               variant="outline"
             >
               Logout
@@ -29,7 +29,7 @@ const Navbar = () => {
         ) : (
           <Link href="/sign-in">
             <Button
-              className="w-full md:w-auto bg-slate-100 text-black"
+              className=" bg-zinc-200/70 hover:bg-zinc-300/70 border border-zinc-600 font-bold"
               variant={"outline"}
             >
               Login
