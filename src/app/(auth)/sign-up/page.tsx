@@ -101,8 +101,8 @@ const page = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen bg-zinc-900">
+      <div className="w-full max-w-md p-8 space-y-8 rounded-lg shadow-md bg-zinc-800 text-white border border-zinc-600 ">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
             Sign up
@@ -118,6 +118,7 @@ const page = () => {
                   <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
+                      className="border-2 border-zinc-600"
                       placeholder="Enter you username"
                       {...field}
                       onChange={(e) => {
@@ -187,7 +188,11 @@ const page = () => {
               )}
             />
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full bg-zinc-900 hover:bg-zinc-950 border border-zinc-600"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

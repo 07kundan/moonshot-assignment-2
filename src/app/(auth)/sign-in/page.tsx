@@ -49,8 +49,8 @@ function Signin() {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-zinc-900 text-black">
-      <div className="w-full max-w-md p-8 space-y-8 bg-zinc-800 rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen bg-zinc-900 text-white">
+      <div className="w-full max-w-md p-8 space-y-8 bg-zinc-800 rounded-lg shadow-md  border border-zinc-600">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
             Login
@@ -66,6 +66,7 @@ function Signin() {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
+                      className="border-2 border-zinc-600"
                       placeholder="Enter your email"
                       {...field}
                       onChange={(e) => {
@@ -87,6 +88,7 @@ function Signin() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
+                      className="border-2 border-zinc-600"
                       placeholder="Enter you Password"
                       {...field}
                       onChange={(e) => {
@@ -100,7 +102,11 @@ function Signin() {
               )}
             />
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full bg-zinc-900 hover:bg-zinc-950 border border-zinc-600"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
