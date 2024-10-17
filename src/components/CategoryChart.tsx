@@ -1,8 +1,8 @@
 "use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-
+import { useRouter, useSearchParams } from "next/navigation";
+import { useDispatch } from "react-redux";
 import {
   BarChart,
   Bar,
@@ -15,25 +15,17 @@ import {
   Cell,
 } from "recharts";
 import { cn } from "@/lib/utils";
-
-interface DataItem {
-  name: string;
-  value: number;
-}
+import { setIsLoading } from "@/store/features/loading.slice";
 
 function CategoryChart({ className }: { className: string }) {
+  const dispatch = useDispatch();
   const searchParams = useSearchParams(); // Get current query parameters
-
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [chartData, setChartData] = useState<DataItem[]>([
-    { name: "", value: 0 },
-    { name: "", value: 0 },
-    { name: "", value: 0 },
-    { name: "", value: 0 },
-    { name: "", value: 0 },
-  ]);
+  const [chartData, setChartData] = useState<DataItem[]>([]);
 
   useEffect(() => {
+    dispatch(setIsLoading(true));
     const updateChartData = (newData: { [key: string]: number }) => {
       const updatedData = Object.keys(newData).map((key) => ({
         name: key,
@@ -44,8 +36,8 @@ function CategoryChart({ className }: { className: string }) {
     async function apiFetch() {
       const res = await axios.get(`/api/category-chart`);
       updateChartData(res.data?.data);
+      dispatch(setIsLoading(false));
     }
-
     apiFetch();
   }, [searchParams]);
 
@@ -77,12 +69,19 @@ function CategoryChart({ className }: { className: string }) {
             cursor={{ fill: "rgba(255, 0, 0, 0.1)" }}
           /> */}
           <Legend />
+
           <Bar dataKey="value" onMouseOut={handleMouseLeave}>
             {chartData.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={index === activeIndex ? "red" : "#82ca9d"}
                 onMouseEnter={() => handleMouseEnter(index)}
+                onClick={() => {
+                  router.push(
+                    `/category-chart/category?category=${entry.name}`
+                  );
+                  // console.log(entry);
+                }}
               />
             ))}
           </Bar>

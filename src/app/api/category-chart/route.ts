@@ -1,33 +1,8 @@
 import fetchData from "@/lib/fetchdata";
 import { NextRequest, NextResponse } from "next/server";
 
-interface DataItem {
-  date: string;
-  age: string;
-  gender: string;
-  A: number;
-  B: number;
-  C: number;
-  D: number;
-  E: number;
-  F: number;
-}
-
-interface CategoryInterface {
-  A: number;
-  B: number;
-  C: number;
-  D: number;
-  E: number;
-  F: number;
-}
-
-interface DataInterface {
-  data: DataItem[];
-}
-
 // Function to accumulate category values
-function accumulateData(data: DataItem[]): CategoryInterface {
+function accumulateData(data: RawDataItem[]): CategoryInterface {
   const result = {
     A: 0,
     B: 0,
@@ -51,21 +26,41 @@ function accumulateData(data: DataItem[]): CategoryInterface {
 
 // Function to filter data based on optional gender, age, and date range
 function getFilteredData(
+  // check individual value and filter
   data: DataInterface,
-  gender?: string | null,
+  category: keyof RawDataItem,
   age?: string | null,
+  gender?: string | null,
   date?: string | null,
-  dateRange?: {
-    startDate: string | null;
-    endDate: string | null;
-  }
-): CategoryInterface {
+  dateRange?: dateRange
+): CategoryInterface | CategoryChart[] {
   let filteredData = data.data;
+  // Filter by category for url /category-chart/category
+  if (category) {
+    const categoryResult: CategoryChart[] = filteredData.map(
+      (item: RawDataItem) => ({
+        date: item.date,
+        value: item[category] as number,
+      })
+    );
+
+    const aggregatedResult = categoryResult.reduce((acc, curr) => {
+      // Check if an entry with the current date already exists in the accumulator
+      const existing = acc.find((item) => item.date === curr.date);
+      if (existing) {
+        existing.value += curr.value; // Add to the existing value
+      } else {
+        acc.push({ ...curr }); // Add the new entry if not already present
+      }
+      return acc;
+    }, [] as { date: string; value: number }[]);
+    return aggregatedResult;
+  }
+
   // Filter by gender if present
   if (gender) {
     filteredData = filteredData.filter((item) => item.gender === gender);
   }
-
   // Filter by age if present
   if (age) {
     if (age === ">25") {
@@ -74,7 +69,7 @@ function getFilteredData(
       filteredData = filteredData.filter((item) => item.age === "15-25");
     }
   }
-
+  // Filter by age if present
   if (date) {
     filteredData = filteredData.filter((item) => {
       const filterDate = new Date(date);
@@ -82,7 +77,6 @@ function getFilteredData(
       return entryDate >= filterDate;
     });
   }
-
   // Filter by date range if present
   if (dateRange && dateRange.startDate && dateRange.endDate) {
     const start = new Date(dateRange.startDate);
@@ -93,7 +87,6 @@ function getFilteredData(
       return entryDate >= start && entryDate <= end;
     });
   }
-  // Return accumulated result of the filtered data
   return accumulateData(filteredData);
 }
 
@@ -102,20 +95,25 @@ export async function GET(req: NextRequest) {
     const url = req.headers.get("referer");
     const urlObj = new URL(url as string);
     const params = new URLSearchParams(urlObj.search);
+    const category = params.get("category");
     const startDate: string | null = params.get("startDate");
     const endDate: string | null = params.get("endDate");
+    const gender: string | null = params.get("gender") || null;
+    const age: string | null = params.get("age") || null;
+    const date: string | null = params.get("date") || null;
     const dateRange = {
       startDate: startDate || null,
       endDate: endDate || null,
     };
-    const gender: string | null = params.get("gender") || null;
-    const age: string | null = params.get("age") || null;
-    const date: string | null = params.get("date") || null;
-    // Fetch data
     const data: DataInterface = await fetchData();
-
-    // Filter data
-    const responseData = getFilteredData(data, gender, age, date, dateRange);
+    const responseData = getFilteredData(
+      data,
+      category as keyof RawDataItem,
+      gender,
+      age,
+      date,
+      dateRange
+    );
     return NextResponse.json(
       {
         data: responseData,

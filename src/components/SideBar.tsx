@@ -1,14 +1,12 @@
 "use client";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function SideBar({ className }: { className: string }) {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedAge, setSelectedAge] = useState("");
   const router = useRouter();
-  const pathname = usePathname();
-
   const handleFilterClick = (filter: string) => {
     const query = new URLSearchParams();
     const today = new Date();
@@ -30,22 +28,21 @@ function SideBar({ className }: { className: string }) {
       query.set("startDate", firstDayOfMonth.toISOString());
       query.set("endDate", todayIn2022.toISOString()); // First day of the month to today's date in 2022
     }
-
-    router.push(`${pathname}?${query.toString()}`);
+    router.push(`/category-chart?${query.toString()}`);
   };
 
   const handleGenderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const gender = e.target.value;
     setSelectedGender(gender);
     const query = new URLSearchParams({ filter: "gender", gender });
-    router.push(`${pathname}?${query.toString()}`);
+    router.push(`category-chart?${query.toString()}`);
   };
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const age = e.target.value;
     setSelectedAge(age);
     const query = new URLSearchParams({ filter: "age", age });
-    router.push(`${pathname}?${query.toString()}`);
+    router.push(`category-chart?${query.toString()}`);
   };
 
   return (

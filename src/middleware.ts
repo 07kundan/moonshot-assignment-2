@@ -8,11 +8,10 @@ export const config = {
 };
 
 export async function middleware(request: NextRequest) {
-  console.log("Request Headers:", request.headers);
+  // console.log("Request Headers:", request.headers);
   const token = await getToken({ req: request });
-  console.log("Token:", token);
+  // console.log("Token:", token);
   const url = request.nextUrl;
-  // console.log("URL:", url);
   if (
     token &&
     (url.pathname.startsWith("/sign-in") ||

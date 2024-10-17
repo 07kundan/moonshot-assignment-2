@@ -51,10 +51,8 @@ const page = () => {
           const response = await axios.get<ApiResponse>(
             `/api/check-username-unique?username=${username}`
           );
-          // console.log("axiosresponse", response);
           setUsernameMessage(response?.data.message);
         } catch (error) {
-          // console.log(error);
           const axiosError = error as AxiosError<ApiResponse>;
           setUsernameMessage(axiosError.message || "Error checking username");
         } finally {
@@ -83,7 +81,6 @@ const page = () => {
       }
       router.replace(`/category-chart`);
     } catch (error) {
-      console.error("Error during sign-up:", error);
       const axiosError = error as AxiosError<ApiResponse>;
       // Default error message
       let errorMessage =

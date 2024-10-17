@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 
     // validating with zod
     const result = usernameQuerySchema.safeParse(queryParam);
-    console.log(result);
+    // console.log(result);
     if (!result.success) {
       const usernameError = result.error.format().username?._errors || [];
       return Response.json(
@@ -36,16 +36,15 @@ export async function GET(request: Request) {
     const { username } = result.data;
     const existingVerifiedUser = await UserModel.findOne({
       username,
-      isVerified: true,
     });
 
     if (existingVerifiedUser) {
       return Response.json(
         {
-          success: false,
-          message: "username already taken",
+          success: true,
+          message: "username is taken",
         },
-        { status: 400 }
+        { status: 200 }
       );
     }
 

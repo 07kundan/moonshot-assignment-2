@@ -19,6 +19,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
+import { ApiResponse } from "@/types/ApiResponse";
+import { AxiosError } from "axios";
 
 function Signin() {
   const form = useForm<z.infer<typeof SigninSchema>>({
@@ -31,21 +33,38 @@ function Signin() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const onSubmit = async (data: z.infer<typeof SigninSchema>) => {
-    // console.log("data from frontend", data);
-    const response = await signIn("credentials", {
-      redirect: false,
-      identifier: data.identifier,
-      password: data.password,
-    });
-    if (response?.error) {
+    setIsSubmitting(true);
+
+    try {
+      const response = await signIn("credentials", {
+        redirect: false,
+        identifier: data.identifier,
+        password: data.password,
+      });
+      if (response?.error) {
+        toast({
+          title: "Login failed",
+          description: response?.error,
+          variant: "destructive",
+        });
+      }
+      if (response?.url) {
+        router.replace("/category-chart");
+      }
+    } catch (error) {
+      console.error("Error while login:", error);
+      const axiosError = error as AxiosError<ApiResponse>;
+      // Default error message
+      let errorMessage =
+        axiosError.response?.data.message ??
+        "There was a problem while login. Please try again.";
       toast({
-        title: "Login failed",
-        description: response?.error,
+        title: "Sign Up Failed",
+        description: errorMessage,
         variant: "destructive",
       });
-    }
-    if (response?.url) {
-      router.replace("/category-chart");
+    } finally {
+      setIsSubmitting(false);
     }
   };
   return (
