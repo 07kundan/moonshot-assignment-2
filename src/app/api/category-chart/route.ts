@@ -31,7 +31,6 @@ function getFilteredData(
   category: keyof RawDataItem,
   gender?: string | null,
   age?: string | null,
-  date?: string | null,
   dateRange?: dateRange
 ): CategoryInterface | CategoryChart[] {
   let filteredData = data.data;
@@ -64,19 +63,12 @@ function getFilteredData(
   // Filter by age if present
   if (age) {
     if (age === ">25") {
-      filteredData = filteredData.filter((item) => item.age === ">=25");
+      filteredData = filteredData.filter((item) => item.age === ">25");
     } else {
       filteredData = filteredData.filter((item) => item.age === "15-25");
     }
   }
-  // Filter by date if present
-  if (date) {
-    filteredData = filteredData.filter((item) => {
-      const filterDate = new Date(date);
-      const entryDate = new Date(item.date);
-      return entryDate >= filterDate;
-    });
-  }
+
   // Filter by date range if present
   if (dateRange && dateRange.startDate && dateRange.endDate) {
     const start = new Date(dateRange.startDate);
@@ -100,7 +92,6 @@ export async function GET(req: NextRequest) {
     const endDate: string | null = params.get("endDate");
     const gender: string | null = params.get("gender") || null;
     const age: string | null = params.get("age") || null;
-    const date: string | null = params.get("date") || null;
     const dateRange = {
       startDate: startDate || null,
       endDate: endDate || null,
@@ -111,7 +102,6 @@ export async function GET(req: NextRequest) {
       category as keyof RawDataItem,
       gender,
       age,
-      date,
       dateRange
     );
     return NextResponse.json(

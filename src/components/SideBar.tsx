@@ -2,34 +2,35 @@
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { DateRangePicker } from "react-date-range";
+import { addDays } from "date-fns";
+import "react-date-range/dist/styles.css"; // Main style file
+import "react-date-range/dist/theme/default.css";
+import { Button } from "./ui/button";
+import { string } from "zod";
 
 function SideBar({ className }: { className: string }) {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedAge, setSelectedAge] = useState("");
+  const [isDateActive, setIsDateActive] = useState<boolean>(false);
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: new Date(2022, new Date().getMonth(), new Date().getDate()),
+      endDate: addDays(
+        new Date(2022, new Date().getMonth(), new Date().getDate()),
+        7
+      ),
+      key: "selection",
+    },
+  ]);
   const router = useRouter();
 
   // function for filtering
-  const handleFilterClick = (filter: string) => {
+  const handleFilterClick = (startDate: Date, endDate: Date) => {
     const query = new URLSearchParams();
     const today = new Date();
-    const todayIn2022 = new Date(2022, today.getMonth(), today.getDate());
-
-    if (filter === "Today") {
-      query.set("date", todayIn2022.toISOString()); // Today's date in ISO 8601 format
-    } else if (filter === "Yesterday") {
-      const yesterday = todayIn2022;
-      yesterday.setDate(yesterday.getDate() - 1);
-      query.set("date", yesterday.toISOString()); // Yesterday's date
-    } else if (filter === "Last 7 Days") {
-      const lastWeek = todayIn2022;
-      lastWeek.setDate(lastWeek.getDate() - 7); // Last week date in 2022
-      query.set("startDate", lastWeek.toISOString());
-      query.set("endDate", todayIn2022.toISOString()); // Last 7 days range in 2022
-    } else if (filter === "This month") {
-      const firstDayOfMonth = new Date(2022, today.getMonth(), 1); // First day of the current month in 2022
-      query.set("startDate", firstDayOfMonth.toISOString());
-      query.set("endDate", todayIn2022.toISOString()); // First day of the month to today's date in 2022
-    }
+    query.set("startDate", startDate.toISOString());
+    query.set("endDate", endDate.toISOString());
     router.push(`/category-chart?${query.toString()}`);
   };
 
@@ -57,30 +58,44 @@ function SideBar({ className }: { className: string }) {
   return (
     <div
       className={cn(
-        "flex justify-center pt-20 bg-zinc-300 border-r border-zinc-600",
+        "pt-20 bg-zinc-300 border-r border-zinc-600 relative",
         className
       )}
     >
+      <div className="text-xl px-6 w-full space-y-3">
+        <button
+          className="hover:bg-zinc-400/60 pl-8 py-2 rounded-lg font-bold w-full text-left"
+          onClick={() => setIsDateActive((prev) => !prev)}
+        >
+          Custom date
+        </button>
+        {isDateActive && (
+          <div className="absolute top-20 left-full z-10 bg-white flex flex-col justify-center items-center gap-2">
+            <DateRangePicker
+              ranges={dateRange}
+              onChange={(item: any) => {
+                setDateRange([item.selection]);
+              }}
+              months={2}
+              direction="horizontal"
+              maxDate={new Date()}
+              minDate={new Date(2022, 0, 1)}
+            />
+            <Button
+              onClick={() => {
+                setIsDateActive((prev) => !prev);
+                handleFilterClick(dateRange[0].startDate, dateRange[0].endDate);
+              }}
+              className=" bg-zinc-200/70 hover:bg-zinc-300/70 border border-zinc-600 font-bold"
+              variant="outline"
+            >
+              Close
+            </Button>
+          </div>
+        )}
+      </div>
+
       <ul className="text-xl px-6 w-full space-y-3">
-        {["Today", "Yesterday", "Last 7 Days", "This month"].map((item) => (
-          <li
-            key={item}
-            className="hover:bg-zinc-400/60 pl-8 py-2 rounded-lg font-bold"
-            onClick={() => handleFilterClick(item)}
-          >
-            <button className="w-full text-left">{item}</button>
-          </li>
-        ))}
-
-        <li className="hover:bg-zinc-400/60 pl-8 py-2 rounded-lg font-bold">
-          <button
-            className="w-full text-left"
-            onClick={() => handleFilterClick("Custom Range")}
-          >
-            Custom Range
-          </button>
-        </li>
-
         <li className="pl-8 py-2 rounded-lg font-bold">
           <select
             className="w-3/4 rounded-lg py-1 bg-transparent focus:outline-none focus:border-blue-500"
@@ -112,6 +127,7 @@ function SideBar({ className }: { className: string }) {
             <option value=">25">&gt;25</option>
           </select>
         </li>
+
         <li className="hover:bg-zinc-400/60 pl-8 py-2 rounded-lg font-bold">
           <button className="w-full text-left" onClick={handleReset}>
             Reset
