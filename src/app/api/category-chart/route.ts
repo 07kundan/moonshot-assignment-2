@@ -29,12 +29,13 @@ function getFilteredData(
   // check individual value and filter
   data: DataInterface,
   category: keyof RawDataItem,
-  age?: string | null,
   gender?: string | null,
+  age?: string | null,
   date?: string | null,
   dateRange?: dateRange
 ): CategoryInterface | CategoryChart[] {
   let filteredData = data.data;
+
   // Filter by category for url /category-chart/category
   if (category) {
     const categoryResult: CategoryChart[] = filteredData.map(
@@ -45,12 +46,11 @@ function getFilteredData(
     );
 
     const aggregatedResult = categoryResult.reduce((acc, curr) => {
-      // Check if an entry with the current date already exists in the accumulator
       const existing = acc.find((item) => item.date === curr.date);
       if (existing) {
-        existing.value += curr.value; // Add to the existing value
+        existing.value += curr.value;
       } else {
-        acc.push({ ...curr }); // Add the new entry if not already present
+        acc.push({ ...curr });
       }
       return acc;
     }, [] as { date: string; value: number }[]);
@@ -69,7 +69,7 @@ function getFilteredData(
       filteredData = filteredData.filter((item) => item.age === "15-25");
     }
   }
-  // Filter by age if present
+  // Filter by date if present
   if (date) {
     filteredData = filteredData.filter((item) => {
       const filterDate = new Date(date);
