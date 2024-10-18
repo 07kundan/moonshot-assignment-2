@@ -7,6 +7,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
 import { setIsLoading } from "@/store/features/loading.slice";
+import { toast } from "@/hooks/use-toast";
 
 const Navbar = ({ className }: { className: string }) => {
   const { data: session } = useSession();
@@ -18,7 +19,7 @@ const Navbar = ({ className }: { className: string }) => {
         <a href="#" className="text-xl font-bold mb-4 md:mb-0">
           Chart
         </a>
-        {session ? (
+        {session && (
           <>
             <span className="mr-4">Welcome, {user.username || user.email}</span>
             <Button
@@ -26,6 +27,9 @@ const Navbar = ({ className }: { className: string }) => {
                 dispatch(setIsLoading(true));
                 await signOut();
                 dispatch(setIsLoading(false));
+                toast({
+                  title: "Logout successfully",
+                });
               }}
               className=" bg-zinc-200/70 hover:bg-zinc-300/70 border border-zinc-600 font-bold"
               variant="outline"
@@ -33,15 +37,6 @@ const Navbar = ({ className }: { className: string }) => {
               Logout
             </Button>
           </>
-        ) : (
-          <Link href="/sign-in">
-            <Button
-              className=" bg-zinc-200/70 hover:bg-zinc-300/70 border border-zinc-600 font-bold"
-              variant={"outline"}
-            >
-              Login
-            </Button>
-          </Link>
         )}
       </div>
     </nav>

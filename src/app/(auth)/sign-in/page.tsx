@@ -23,6 +23,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { AxiosError } from "axios";
 
 function Signin() {
+  // validating
   const form = useForm<z.infer<typeof SigninSchema>>({
     resolver: zodResolver(SigninSchema),
     defaultValues: {
@@ -32,9 +33,10 @@ function Signin() {
   });
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // function for when form submited
   const onSubmit = async (data: z.infer<typeof SigninSchema>) => {
     setIsSubmitting(true);
-
     try {
       const response = await signIn("credentials", {
         redirect: false,
@@ -47,12 +49,15 @@ function Signin() {
           description: response?.error,
           variant: "destructive",
         });
+      } else {
+        toast({
+          title: "Login successfully",
+        });
       }
       if (response?.url) {
         router.replace("/category-chart");
       }
     } catch (error) {
-      console.error("Error while login:", error);
       const axiosError = error as AxiosError<ApiResponse>;
       // Default error message
       let errorMessage =

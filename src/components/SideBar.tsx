@@ -7,6 +7,8 @@ function SideBar({ className }: { className: string }) {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedAge, setSelectedAge] = useState("");
   const router = useRouter();
+
+  // function for filtering
   const handleFilterClick = (filter: string) => {
     const query = new URLSearchParams();
     const today = new Date();
@@ -31,18 +33,25 @@ function SideBar({ className }: { className: string }) {
     router.push(`/category-chart?${query.toString()}`);
   };
 
+  //fitering based on gender
   const handleGenderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const gender = e.target.value;
     setSelectedGender(gender);
     const query = new URLSearchParams({ filter: "gender", gender });
-    router.push(`category-chart?${query.toString()}`);
+    router.push(`/category-chart?${query.toString()}`);
   };
 
+  // filtering based on age
   const handleAgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const age = e.target.value;
     setSelectedAge(age);
     const query = new URLSearchParams({ filter: "age", age });
     router.push(`category-chart?${query.toString()}`);
+  };
+
+  // reset all filter
+  const handleReset = () => {
+    router.replace("/category-chart");
   };
 
   return (
@@ -102,6 +111,11 @@ function SideBar({ className }: { className: string }) {
             <option value="15-25">15-25</option>
             <option value=">25">&gt;25</option>
           </select>
+        </li>
+        <li className="hover:bg-zinc-400/60 pl-8 py-2 rounded-lg font-bold">
+          <button className="w-full text-left" onClick={handleReset}>
+            Reset
+          </button>
         </li>
       </ul>
     </div>

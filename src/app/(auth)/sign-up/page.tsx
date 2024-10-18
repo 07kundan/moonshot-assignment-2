@@ -43,6 +43,7 @@ const page = () => {
   });
 
   useEffect(() => {
+    // debounce call to check username availability
     const checkUsernameValid = async () => {
       if (username) {
         setIsCheckingUsername(true);
@@ -60,10 +61,10 @@ const page = () => {
         }
       }
     };
-
     checkUsernameValid();
   }, [username]);
 
+  // funtion for, when form is submited
   const onSubmit = async (data: z.infer<typeof signupSchema>) => {
     setIsSubmitting(true);
     try {
@@ -75,8 +76,7 @@ const page = () => {
         });
       } else {
         toast({
-          title: "successful",
-          description: response?.data.message,
+          title: "Registered successfully",
         });
       }
       router.replace(`/category-chart`);
