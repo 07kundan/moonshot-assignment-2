@@ -47,7 +47,7 @@ function SideBar({ className }: { className: string }) {
     const age = e.target.value;
     setSelectedAge(age);
     const query = new URLSearchParams({ filter: "age", age });
-    router.push(`category-chart?${query.toString()}`);
+    router.push(`/category-chart?${query.toString()}`);
   };
 
   // reset all filter

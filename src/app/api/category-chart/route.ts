@@ -39,7 +39,7 @@ function getFilteredData(
   if (category) {
     const categoryResult: CategoryChart[] = filteredData.map(
       (item: RawDataItem) => ({
-        date: item.date,
+        date: new Date(item.date).toLocaleDateString(),
         value: item[category] as number,
       })
     );
