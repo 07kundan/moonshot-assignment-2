@@ -14,6 +14,7 @@ import {
   YAxis,
 } from "recharts";
 import { useGesture } from "@use-gesture/react";
+import { CategoryChart } from "@/interface/ChartDataInterface";
 
 function Page() {
   const [chartData, setChartData] = useState<CategoryChart[]>([]);

@@ -1,12 +1,12 @@
 import { CategoryChart } from "@/components";
 import React from "react";
 
-function page({ className }: { className: string }) {
+function Dashboard() {
   return (
     <div>
-      <CategoryChart className={className} />
+      <CategoryChart className="" />
     </div>
   );
 }
 
-export default page;
+export default Dashboard;

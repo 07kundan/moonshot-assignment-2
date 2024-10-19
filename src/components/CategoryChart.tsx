@@ -15,6 +15,7 @@ import {
 } from "recharts";
 import { cn } from "@/lib/utils";
 import { setIsLoading } from "@/store/features/loading.slice";
+import { DataItem } from "@/interface/ChartDataInterface";
 
 function CategoryChart({ className }: { className: string }) {
   const dispatch = useDispatch();
