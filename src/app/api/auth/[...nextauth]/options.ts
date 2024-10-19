@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { error } from "console";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -37,8 +38,8 @@ export const authOptions: NextAuthOptions = {
           } else {
             throw new Error("Invalid Password");
           }
-        } catch (error: any) {
-          throw new Error(error);
+        } catch (error) {
+          throw error;
         }
       },
     }),

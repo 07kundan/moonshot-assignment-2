@@ -29,7 +29,7 @@ function Page() {
       dispatch(setIsLoading(false));
     }
     apiFetch();
-  }, []);
+  });
 
   const displayedData = useMemo(() => {
     const startIndex = Math.max(0, Math.floor(offset));

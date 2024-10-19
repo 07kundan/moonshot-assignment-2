@@ -1,9 +1,9 @@
-interface DataItem {
+export interface DataItem {
   name: string;
   value: number;
 }
 
-interface RawDataItem {
+export interface RawDataItem {
   date: string;
   age: string;
   gender: string;
@@ -15,7 +15,7 @@ interface RawDataItem {
   F: number;
 }
 
-interface CategoryInterface {
+export interface CategoryInterface {
   A: number;
   B: number;
   C: number;
@@ -24,20 +24,20 @@ interface CategoryInterface {
   F: number;
 }
 
-interface DataInterface {
+export interface DataInterface {
   data: RawDataItem[];
 }
 
-interface dateRange {
+export interface dateRange {
   startDate: string | null;
   endDate: string | null;
 }
 
-interface CategoryChart {
+export interface CategoryChart {
   date: string;
   value: number;
 }
 
-interface CategoryChartData {
+export interface CategoryChartData {
   data: CategoryChart[];
 }

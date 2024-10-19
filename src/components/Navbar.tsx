@@ -3,7 +3,6 @@ import React from "react";
 import { signOut, useSession } from "next-auth/react";
 import { User } from "next-auth";
 import { Button } from "./ui/button";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
 import { setIsLoading } from "@/store/features/loading.slice";

@@ -60,7 +60,7 @@ function Signin() {
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       // Default error message
-      let errorMessage =
+      const errorMessage =
         axiosError.response?.data.message ??
         "There was a problem while login. Please try again.";
       toast({
@@ -145,7 +145,7 @@ function Signin() {
 
         <div className="text-center mt-4">
           <p>
-            Don't have account ?{" "}
+            Don&apos;t have account ?
             <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
               Sign up
             </Link>

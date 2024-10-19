@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
-const page = () => {
+function SignUp() {
   const [username, setUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
 
@@ -83,7 +83,7 @@ const page = () => {
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       // Default error message
-      let errorMessage =
+      const errorMessage =
         axiosError.response?.data.message ??
         "There was a problem while registering. Please try again.";
 
@@ -213,6 +213,6 @@ const page = () => {
       </div>
     </div>
   );
-};
+}
 
-export default page;
+export default SignUp;

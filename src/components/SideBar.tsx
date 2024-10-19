@@ -2,18 +2,17 @@
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { DateRangePicker } from "react-date-range";
+import { DateRangePicker, Range, RangeKeyDict } from "react-date-range";
 import { addDays } from "date-fns";
 import "react-date-range/dist/styles.css"; // Main style file
 import "react-date-range/dist/theme/default.css";
 import { Button } from "./ui/button";
-import { string } from "zod";
 
 function SideBar({ className }: { className: string }) {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedAge, setSelectedAge] = useState("");
   const [isDateActive, setIsDateActive] = useState<boolean>(false);
-  const [dateRange, setDateRange] = useState([
+  const [dateRange, setDateRange] = useState<Range[]>([
     {
       startDate: new Date(2022, new Date().getMonth(), new Date().getDate()),
       endDate: addDays(
@@ -26,9 +25,11 @@ function SideBar({ className }: { className: string }) {
   const router = useRouter();
 
   // function for filtering
-  const handleFilterClick = (startDate: Date, endDate: Date) => {
+  const handleFilterClick = (
+    startDate: Date | undefined,
+    endDate: Date | undefined
+  ) => {
     const query = new URLSearchParams();
-    const today = new Date();
     query.set("startDate", startDate.toISOString());
     query.set("endDate", endDate.toISOString());
     router.push(`/category-chart?${query.toString()}`);
@@ -73,7 +74,8 @@ function SideBar({ className }: { className: string }) {
           <div className="absolute top-20 left-full z-10 bg-white flex flex-col justify-center items-center gap-2">
             <DateRangePicker
               ranges={dateRange}
-              onChange={(item: any) => {
+              onChange={(item: RangeKeyDict) => {
+                console.log(item);
                 setDateRange([item.selection]);
               }}
               months={2}

@@ -1,5 +1,3 @@
-import { CategoryChart } from "@/components";
-
 export default function Home() {
-  return <div className="">home </div>;
+  return <div className="">You found the bug shouldn't be here</div>;
 }

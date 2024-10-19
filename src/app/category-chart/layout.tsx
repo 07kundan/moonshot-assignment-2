@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     if (!preferences) {
       Cookies.set("lastFilter", currentUrl);
     }
-  }, [searchParams]);
+  }, [searchParams, pathname, preferences]);
 
   return (
     <section className="w-screen h-screen flex relative">

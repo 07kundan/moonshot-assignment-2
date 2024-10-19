@@ -1,6 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/User";
-import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
 export async function POST(request: Request) {
@@ -53,10 +52,11 @@ export async function POST(request: Request) {
       }
     );
   } catch (error) {
+    console.log(error);
     return Response.json(
       {
         success: false,
-        message: "error registering user",
+        message: "error while registering user",
       },
       {
         status: 500,
