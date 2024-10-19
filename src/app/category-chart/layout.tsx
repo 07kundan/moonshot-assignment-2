@@ -43,7 +43,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    window.innerWidth > 720 ? setScreenWindow(true) : setScreenWindow(false);
+    if (window.innerWidth > 720) {
+      setScreenWindow(true);
+    } else {
+      setScreenWindow(false);
+    }
     if (searchParams) {
       const currentUrl = `${pathname}?${searchParams.toString()}`;
       if (!preferences) {
