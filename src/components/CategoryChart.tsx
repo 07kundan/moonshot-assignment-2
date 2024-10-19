@@ -74,7 +74,7 @@ function CategoryChart({ className }: { className: string }) {
               {chartData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={index === activeIndex ? "#4f8d67" : "#82ca9d"}
+                  fill={index === activeIndex ? "#3c7d79" : "#57A6A1"}
                   onMouseEnter={() => handleMouseEnter(index)}
                   onClick={() => {
                     router.push(

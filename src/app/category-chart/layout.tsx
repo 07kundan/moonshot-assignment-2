@@ -59,13 +59,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <SearchParamsWrapper setSearchParams={setSearchParams} />
-      <section className="w-screen h-screen flex relative">
+      <section className="w-screen h-screen flex relative bg-[#344C64]">
         {hamburger && !screenWindow && (
           <SideBar
             hamburger={hamburger}
             setHamburger={setHamburger}
             screenWindow={screenWindow}
-            className="w-1/2 h-screen fixed top-0 left-0 z-10"
+            className="w-1/2 h-screen fixed top-0 left-0 z-10 bg-[#577B8D]"
           />
         )}
         {screenWindow && (
@@ -73,30 +73,30 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             hamburger={hamburger}
             setHamburger={setHamburger}
             screenWindow={screenWindow}
-            className="w-[20vw] h-screen "
+            className="w-[20vw] h-screen bg-[#577B8D]"
           />
         )}
         <section className="w-full h-screen">
           <Navbar
             setHamburger={setHamburger}
             screenWindow={screenWindow}
-            className="w-full md:h-[10%] "
+            className="w-full md:h-[10%] bg-[#577B8D]"
           />
           {isLoading && <LineLoading />}
           <section className="w-full h-[85%] pt-3">{children}</section>
         </section>
 
         {preferences && (
-          <section className="absolute bottom-0 right-0 w-full flex justify-around md:block md:w-fit md:bottom-6 md:right-6 bg-white py-3 px-5 space-x-3 ">
+          <section className="absolute bottom-0 right-0 w-full flex justify-around md:block md:w-fit md:bottom-6 md:right-6 bg-[#577B8D] py-3 px-5 space-x-3 ">
             <Button
-              className="text-xs bg-zinc-200/70 hover:bg-zinc-300/70 border border-zinc-600 font-bold"
+              className="text-xs bg-[#344C64] hover:bg-[#233548] border border-[#172637] font-bold text-[#57A6A1]"
               variant="outline"
               onClick={applyPreferences}
             >
               Apply Preferences
             </Button>
             <Button
-              className="text-xs bg-zinc-200/70 hover:bg-zinc-300/70 border border-zinc-600 font-bold"
+              className="text-xs bg-[#344C64] hover:bg-[#233548] border border-[#172637] font-bold text-[#57A6A1]"
               variant="outline"
               onClick={resetPreferences}
             >

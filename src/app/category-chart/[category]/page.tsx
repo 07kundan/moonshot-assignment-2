@@ -43,12 +43,12 @@ function Page() {
   }, [chartData, zoom, offset]);
 
   const bind = useGesture({
-    onWheel: ({ delta }) => {
-      setZoom((z) => {
-        const newZoom = z - delta[1] * 0.01;
-        return Math.max(1, newZoom);
-      });
-    },
+    // onWheel: ({ delta }) => {
+    //   setZoom((z) => {
+    //     const newZoom = z - delta[1] * 0.01;
+    //     return Math.max(1, newZoom);
+    //   });
+    // },
     onPinch: ({ offset: [d], event }) => {
       event.preventDefault();
       setZoom((z) => Math.max(1, z - d * 0.01));
@@ -59,7 +59,7 @@ function Page() {
   });
 
   return (
-    <section className="h-full" {...bind()}>
+    <section className="h-5/6 mt-16 md:mt-4 md:h-full" {...bind()}>
       <ResponsiveContainer width="97%" height="100%" className={"select-none"}>
         <LineChart
           width={500}
