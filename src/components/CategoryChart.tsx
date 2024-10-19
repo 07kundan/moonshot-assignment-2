@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import React, { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import {
   BarChart,
@@ -19,7 +19,6 @@ import { DataItem } from "@/interface/ChartDataInterface";
 
 function CategoryChart({ className }: { className: string }) {
   const dispatch = useDispatch();
-  const searchParams = useSearchParams(); // Get current query parameters
   const router = useRouter();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [chartData, setChartData] = useState<DataItem[]>([]);
@@ -39,7 +38,7 @@ function CategoryChart({ className }: { className: string }) {
       dispatch(setIsLoading(false));
     }
     apiFetch();
-  }, [searchParams]);
+  }, [window.location.href]);
 
   const handleMouseEnter = (index: number) => {
     setActiveIndex(index);

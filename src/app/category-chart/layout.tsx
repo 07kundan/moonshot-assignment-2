@@ -5,13 +5,27 @@ import React, { useState, Suspense, ReactNode, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
 import { Button } from "@/components/ui/button";
+
+function SearchParamsWrapper({
+  setSearchParams,
+}: {
+  setSearchParams: (params: URLSearchParams) => void;
+}) {
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    setSearchParams(searchParams);
+  }, [searchParams]);
+
+  return null; // This component does not render anything visible.
+}
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [preferences, setPreferences] = useState<boolean>(true);
+  const [searchParams, setSearchParams] = useState<URLSearchParams | null>(
+    null
+  );
   const isLoading = useSelector((state: RootState) => state.loading.isLoading);
-  const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -27,14 +41,17 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    const currentUrl = `${pathname}?${searchParams.toString()}`;
-    if (!preferences) {
-      Cookies.set("lastFilter", currentUrl);
+    if (searchParams) {
+      const currentUrl = `${pathname}?${searchParams.toString()}`;
+      if (!preferences) {
+        Cookies.set("lastFilter", currentUrl);
+      }
     }
   }, [searchParams, pathname, preferences]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchParamsWrapper setSearchParams={setSearchParams} />
       <section className="w-screen h-screen flex relative">
         <aside>
           <SideBar className="w-[20vw] h-screen" />
