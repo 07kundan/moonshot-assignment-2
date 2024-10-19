@@ -1,3 +1,10 @@
+import {
+  CategoryChart,
+  CategoryInterface,
+  DataInterface,
+  dateRange,
+  RawDataItem,
+} from "@/interface/ChartDataInterface";
 import fetchData from "@/lib/fetchdata";
 import { NextRequest, NextResponse } from "next/server";
 
