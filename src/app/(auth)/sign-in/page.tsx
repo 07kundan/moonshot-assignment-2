@@ -74,7 +74,7 @@ function Signin() {
   };
   return (
     <div className="flex justify-center items-center min-h-screen bg-zinc-900 text-white">
-      <div className="w-full max-w-md p-8 space-y-8 bg-zinc-800 rounded-lg shadow-md  border border-zinc-600">
+      <div className="w-4/5 md:w-full max-w-md p-8 space-y-8 bg-zinc-800 rounded-lg shadow-md  border border-zinc-600">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
             Login
@@ -87,11 +87,11 @@ function Signin() {
               name="identifier"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email or Username</FormLabel>
                   <FormControl>
                     <Input
                       className="border-2 border-zinc-600"
-                      placeholder="Enter your email"
+                      placeholder="Enter your email or username"
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);

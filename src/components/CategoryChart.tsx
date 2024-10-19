@@ -74,13 +74,12 @@ function CategoryChart({ className }: { className: string }) {
               {chartData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={index === activeIndex ? "red" : "#82ca9d"}
+                  fill={index === activeIndex ? "#4f8d67" : "#82ca9d"}
                   onMouseEnter={() => handleMouseEnter(index)}
                   onClick={() => {
                     router.push(
                       `/category-chart/category?category=${entry.name}`
                     );
-                    // console.log(entry);
                   }}
                 />
               ))}

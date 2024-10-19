@@ -99,7 +99,7 @@ function SignUp() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-zinc-900">
-      <div className="w-full max-w-md p-8 space-y-8 rounded-lg shadow-md bg-zinc-800 text-white border border-zinc-600 ">
+      <div className="w-4/5 md:w-full max-w-md p-8 space-y-8 rounded-lg shadow-md bg-zinc-800 text-white border border-zinc-600 ">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
             Sign up

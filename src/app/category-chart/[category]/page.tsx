@@ -23,6 +23,7 @@ function Page() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("trying");
     dispatch(setIsLoading(true));
     async function apiFetch() {
       const res = await axios.get(`/api/category-chart`);
@@ -30,7 +31,7 @@ function Page() {
       dispatch(setIsLoading(false));
     }
     apiFetch();
-  });
+  }, []);
 
   const displayedData = useMemo(() => {
     const startIndex = Math.max(0, Math.floor(offset));
@@ -59,7 +60,7 @@ function Page() {
 
   return (
     <section className="h-full" {...bind()}>
-      <ResponsiveContainer width="95%" height="100%" className={"select-none"}>
+      <ResponsiveContainer width="97%" height="100%" className={"select-none"}>
         <LineChart
           width={500}
           height={300}

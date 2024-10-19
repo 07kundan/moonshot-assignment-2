@@ -7,8 +7,19 @@ import { addDays } from "date-fns";
 import "react-date-range/dist/styles.css"; // Main style file
 import "react-date-range/dist/theme/default.css";
 import { Button } from "./ui/button";
+import { Cross } from "lucide-react";
 
-function SideBar({ className }: { className: string }) {
+function SideBar({
+  className,
+  screenWindow,
+  setHamburger,
+  hamburger,
+}: {
+  className: string;
+  screenWindow: boolean;
+  hamburger: boolean;
+  setHamburger: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedAge, setSelectedAge] = useState("");
   const [isDateActive, setIsDateActive] = useState<boolean>(false);
@@ -63,9 +74,17 @@ function SideBar({ className }: { className: string }) {
         className
       )}
     >
-      <div className="text-xl px-6 w-full space-y-3">
+      {!screenWindow && hamburger && (
         <button
-          className="hover:bg-zinc-400/60 pl-8 py-2 rounded-lg font-bold w-full text-left"
+          className="absolute top-6 right-4 rotate-45 transition-all"
+          onClick={() => setHamburger((prev) => !prev)}
+        >
+          <Cross />
+        </button>
+      )}
+      <div className="text-xl md:px-6 w-full space-y-3">
+        <button
+          className="hover:bg-zinc-400/60 pl-10 md:pl-8 py-2 rounded-lg font-bold w-full text-left"
           onClick={() => setIsDateActive((prev) => !prev)}
         >
           Custom date
@@ -97,8 +116,8 @@ function SideBar({ className }: { className: string }) {
         )}
       </div>
 
-      <ul className="text-xl px-6 w-full space-y-3">
-        <li className="pl-8 py-2 rounded-lg font-bold">
+      <ul className="text-xl md:px-6 w-full space-y-3">
+        <li className="flex pl-10 md:pl-8 py-2 rounded-lg font-bold hover:bg-zinc-400/60">
           <select
             className="w-3/4 rounded-lg py-1 bg-transparent focus:outline-none focus:border-blue-500"
             name="gender"
@@ -114,7 +133,7 @@ function SideBar({ className }: { className: string }) {
           </select>
         </li>
 
-        <li className="pl-8 py-2 rounded-lg font-bold">
+        <li className="pl-10 md:pl-8 py-2 rounded-lg font-bold hover:bg-zinc-400/60">
           <select
             className="w-3/4 rounded-lg py-1 bg-transparent focus:outline-none focus:border-blue-500"
             name="age"
@@ -130,7 +149,7 @@ function SideBar({ className }: { className: string }) {
           </select>
         </li>
 
-        <li className="hover:bg-zinc-400/60 pl-8 py-2 rounded-lg font-bold">
+        <li className="hover:bg-zinc-400/60 pl-10 md:pl-8 py-2 rounded-lg font-bold">
           <button className="w-full text-left" onClick={handleReset}>
             Reset
           </button>

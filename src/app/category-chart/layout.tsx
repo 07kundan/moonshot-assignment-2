@@ -22,6 +22,8 @@ function SearchParamsWrapper({
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [preferences, setPreferences] = useState<boolean>(true);
+  const [hamburger, setHamburger] = useState<boolean>(false);
+  const [screenWindow, setScreenWindow] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useState<URLSearchParams | null>(
     null
   );
@@ -41,6 +43,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    window.innerWidth > 720 ? setScreenWindow(true) : setScreenWindow(false);
     if (searchParams) {
       const currentUrl = `${pathname}?${searchParams.toString()}`;
       if (!preferences) {
@@ -53,17 +56,34 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <Suspense fallback={<div>Loading...</div>}>
       <SearchParamsWrapper setSearchParams={setSearchParams} />
       <section className="w-screen h-screen flex relative">
-        <aside>
-          <SideBar className="w-[20vw] h-screen" />
-        </aside>
+        {hamburger && !screenWindow && (
+          <SideBar
+            hamburger={hamburger}
+            setHamburger={setHamburger}
+            screenWindow={screenWindow}
+            className="w-1/2 h-screen fixed top-0 left-0 z-10"
+          />
+        )}
+        {screenWindow && (
+          <SideBar
+            hamburger={hamburger}
+            setHamburger={setHamburger}
+            screenWindow={screenWindow}
+            className="w-[20vw] h-screen "
+          />
+        )}
         <section className="w-full h-screen">
-          <Navbar className="w-full px-24 py-3 justify-between flex h-[10%]" />
+          <Navbar
+            setHamburger={setHamburger}
+            screenWindow={screenWindow}
+            className="w-full md:h-[10%] "
+          />
           {isLoading && <LineLoading />}
           <section className="w-full h-[85%] pt-3">{children}</section>
         </section>
 
         {preferences && (
-          <section className="absolute bottom-8 right-8 bg-white py-3 px-5 space-x-3">
+          <section className="absolute bottom-0 right-0 w-full flex justify-around md:block md:w-fit md:bottom-6 md:right-6 bg-white py-3 px-5 space-x-3 ">
             <Button
               className="text-xs bg-zinc-200/70 hover:bg-zinc-300/70 border border-zinc-600 font-bold"
               variant="outline"

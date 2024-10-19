@@ -4,7 +4,7 @@ import React from "react";
 function Dashboard() {
   return (
     <div>
-      <CategoryChart className="" />
+      <CategoryChart className="mt-12 md:mt-0" />
     </div>
   );
 }
