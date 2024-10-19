@@ -10,14 +10,20 @@ const connection: ConnectionObject = {
 
 async function dbConnect(): Promise<void> {
   if (connection.isconnected) {
+    console.log("Already connected to the database.");
     return;
   }
 
+  const mongoUri = process.env.MONGO_URL;
+  if (!mongoUri) {
+    throw new Error("MONGO_URL environment variable is not defined.");
+  }
+
   try {
-    const db = await mongoose.connect(process.env.MONGO_URL || "", {});
+    const db = await mongoose.connect(mongoUri, {});
     connection.isconnected = db.connections[0].readyState;
   } catch (error) {
-    console.log(error);
+    console.error("Error connecting to MongoDB:", error);
     process.exit(1);
   }
 }
