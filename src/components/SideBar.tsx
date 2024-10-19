@@ -30,8 +30,8 @@ function SideBar({ className }: { className: string }) {
     endDate: Date | undefined
   ) => {
     const query = new URLSearchParams();
-    query.set("startDate", startDate.toISOString());
-    query.set("endDate", endDate.toISOString());
+    query.set("startDate", startDate?.toISOString() || "");
+    query.set("endDate", endDate?.toISOString() || "");
     router.push(`/category-chart?${query.toString()}`);
   };
 
