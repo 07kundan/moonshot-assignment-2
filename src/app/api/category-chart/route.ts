@@ -21,6 +21,7 @@ function accumulateData(data: RawDataItem[]): CategoryInterface {
     F: 0,
   };
 
+  // accumulating category value
   data.forEach((item) => {
     result.A += item.A || 0;
     result.B += item.B || 0;
@@ -35,16 +36,16 @@ function accumulateData(data: RawDataItem[]): CategoryInterface {
 
 // Function to filter data based on optional gender, age, and date range
 function getFilteredData(
-  // check individual value and filter
   data: DataInterface,
   category: keyof RawDataItem,
   gender?: string | null,
   age?: string | null,
   dateRange?: dateRange
 ): CategoryInterface | CategoryChart[] {
+  // varible to make changes
   let filteredData = data.data;
 
-  // Filter by category for url /category-chart/category
+  // Filteration by category for url /category-chart/category
   if (category) {
     const categoryResult: CategoryChart[] = filteredData.map(
       (item: RawDataItem) => ({
@@ -65,11 +66,11 @@ function getFilteredData(
     return aggregatedResult;
   }
 
-  // Filter by gender if present
+  // Filteration by gender if present
   if (gender) {
     filteredData = filteredData.filter((item) => item.gender === gender);
   }
-  // Filter by age if present
+  // Filteration by age if present
   if (age) {
     if (age === ">25") {
       filteredData = filteredData.filter((item) => item.age === ">25");
@@ -78,16 +79,17 @@ function getFilteredData(
     }
   }
 
-  // Filter by date range if present
+  // Filteration by date range if present
   if (dateRange && dateRange.startDate && dateRange.endDate) {
     const start = new Date(dateRange.startDate);
     const end = new Date(dateRange.endDate);
-
     filteredData = filteredData.filter((item) => {
       const entryDate = new Date(item.date);
       return entryDate >= start && entryDate <= end;
     });
   }
+
+  // returning the accumulated end result
   return accumulateData(filteredData);
 }
 
@@ -105,7 +107,11 @@ export async function GET(req: NextRequest) {
       startDate: startDate || null,
       endDate: endDate || null,
     };
+
+    // fetching the entire data
     const data: DataInterface = await fetchData();
+
+    // call the function for filtering the data based on query
     const responseData = getFilteredData(
       data,
       category as keyof RawDataItem,
@@ -113,6 +119,8 @@ export async function GET(req: NextRequest) {
       age,
       dateRange
     );
+
+    // returning the response body
     return NextResponse.json(
       {
         data: responseData,

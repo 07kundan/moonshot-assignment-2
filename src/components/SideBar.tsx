@@ -35,7 +35,7 @@ function SideBar({
   ]);
   const router = useRouter();
 
-  // function for filtering
+  // function for filtering based on date-range
   const handleFilterClick = (
     startDate: Date | undefined,
     endDate: Date | undefined

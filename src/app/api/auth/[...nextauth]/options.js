@@ -12,9 +12,9 @@ export const authOptions = {
         username: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
+      // signing
       async authorize(credentials) {
         dbConnect();
-        // console.log("user credentials", credentials);
         try {
           const user = await UserModel.findOne({
             $or: [
@@ -50,6 +50,7 @@ export const authOptions = {
       }
       return token;
     },
+    // session
     async session({ session, token }) {
       if (token) {
         session.user._id = token._id;

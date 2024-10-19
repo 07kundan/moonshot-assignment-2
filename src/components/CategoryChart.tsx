@@ -25,6 +25,7 @@ function CategoryChart({ className }: { className: string }) {
 
   useEffect(() => {
     dispatch(setIsLoading(true));
+    // function to update the data in state
     const updateChartData = (newData: { [key: string]: number }) => {
       const updatedData = Object.keys(newData).map((key) => ({
         name: key,
@@ -32,6 +33,8 @@ function CategoryChart({ className }: { className: string }) {
       }));
       setChartData(updatedData);
     };
+
+    // making an api call for the data and updating the data into state
     async function apiFetch() {
       const res = await axios.get(`/api/category-chart`);
       updateChartData(res.data?.data);
@@ -40,10 +43,12 @@ function CategoryChart({ className }: { className: string }) {
     apiFetch();
   }, [window.location.href]);
 
+  // for onhover effect in the bar
   const handleMouseEnter = (index: number) => {
     setActiveIndex(index);
   };
 
+  // for onhover effect in the bar
   const handleMouseLeave = () => {
     setActiveIndex(null);
   };

@@ -9,6 +9,8 @@ export async function POST(request: Request) {
     const existingUserVerifiedByUsername = await UserModel.findOne({
       username,
     });
+
+    // If username already exist
     if (existingUserVerifiedByUsername) {
       return Response.json(
         {
@@ -20,9 +22,13 @@ export async function POST(request: Request) {
         }
       );
     }
+
+    // checking email int the database
     const existingUserEmail = await UserModel.findOne({
       email,
     });
+
+    // If email already exist in the database
     if (existingUserEmail) {
       return new Response(
         JSON.stringify({
@@ -34,14 +40,19 @@ export async function POST(request: Request) {
         }
       );
     }
+
+    // hashing password
     const hashedPassword = await bcrypt.hash(password as string, 10);
 
+    // creating document
     const newUser = new UserModel({
       username,
       email,
       password: hashedPassword,
     });
     await newUser.save();
+
+    // returning response body
     return Response.json(
       {
         success: true,

@@ -16,10 +16,8 @@ export async function GET(request: Request) {
     const queryParam = {
       username: searchParams.get("username"),
     };
-
     // validating with zod
     const result = usernameQuerySchema.safeParse(queryParam);
-    // console.log(result);
     if (!result.success) {
       const usernameError = result.error.format().username?._errors || [];
       return Response.json(
@@ -34,11 +32,13 @@ export async function GET(request: Request) {
       );
     }
 
+    // if username is in correct formate
     const { username } = result.data;
     const existingVerifiedUser = await UserModel.findOne({
       username,
     });
 
+    // If username found in the database
     if (existingVerifiedUser) {
       return Response.json(
         {
@@ -49,6 +49,7 @@ export async function GET(request: Request) {
       );
     }
 
+    // If not found
     return Response.json(
       {
         success: true,

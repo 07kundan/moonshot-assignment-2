@@ -9,5 +9,6 @@ export default function StoreProvider({
 }) {
   const store = makeStore();
 
+  // global state provider
   return <Provider store={store}>{children}</Provider>;
 }

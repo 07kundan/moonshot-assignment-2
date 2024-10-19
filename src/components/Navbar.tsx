@@ -19,8 +19,9 @@ const Navbar = ({
   setHamburger: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { data: session } = useSession();
-  const user: User = session?.user as User;
+  const user: User = session?.user as User; // for accessing the username
   const dispatch = useDispatch();
+
   return (
     <nav className={cn("p-4 md:py-4 md:px-24 text-black", className)}>
       <div className="container mx-auto flex items-center  md:flex-row justify-between">

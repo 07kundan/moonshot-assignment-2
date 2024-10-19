@@ -22,8 +22,8 @@ function Page() {
   const [offset, setOffset] = useState(0); // Pan offset
   const dispatch = useDispatch();
 
+  // fetching the data
   useEffect(() => {
-    console.log("trying");
     dispatch(setIsLoading(true));
     async function apiFetch() {
       const res = await axios.get(`/api/category-chart`);
@@ -33,6 +33,7 @@ function Page() {
     apiFetch();
   }, []);
 
+  // If the dependencies element's values changes
   const displayedData = useMemo(() => {
     const startIndex = Math.max(0, Math.floor(offset));
     const endIndex = Math.min(
@@ -42,6 +43,7 @@ function Page() {
     return chartData.slice(startIndex, endIndex);
   }, [chartData, zoom, offset]);
 
+  // If any zoom event occur
   const bind = useGesture({
     // onWheel: ({ delta }) => {
     //   setZoom((z) => {

@@ -33,6 +33,7 @@ function SignUp() {
   const { toast } = useToast();
   const router = useRouter();
 
+  // form validation
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {

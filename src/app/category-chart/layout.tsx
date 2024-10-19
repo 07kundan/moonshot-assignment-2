@@ -31,17 +31,20 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
+  // applying the filter preferences or last visit url when left
   const applyPreferences = () => {
     const lastFilter = Cookies.get("lastFilter");
     router.push(`${lastFilter}`);
     setPreferences(false);
   };
 
+  // reseting the filter preferences in cookie
   const resetPreferences = () => {
     Cookies.remove("filters");
     setPreferences(false);
   };
 
+  // updating the cookie when user apply filter or change the url
   useEffect(() => {
     if (window.innerWidth > 720) {
       setScreenWindow(true);
