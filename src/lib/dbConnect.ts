@@ -13,8 +13,9 @@ async function dbConnect(): Promise<void> {
     console.log("Already connected to the database.");
     return;
   }
-
+  console.log("env", process.env.MONGO_URL);
   const mongoUri = process.env.MONGO_URL;
+  console.log("mongourl", mongoUri);
   if (!mongoUri) {
     throw new Error("MONGO_URL environment variable is not defined.");
   }
