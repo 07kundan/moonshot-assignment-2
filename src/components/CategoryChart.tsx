@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import {
@@ -50,44 +50,46 @@ function CategoryChart({ className }: { className: string }) {
   };
 
   return (
-    <section className={cn(className, "")}>
-      <ResponsiveContainer width="95%" height={600}>
-        <BarChart
-          data={chartData}
-          layout="vertical"
-          barCategoryGap={20} // Space between categories
-        >
-          <CartesianGrid strokeDasharray="1 5" />
-          <XAxis type="number" domain={[0, 70000]} tickCount={8} />
-          <YAxis
-            dataKey="name"
-            type="category"
-            padding={{ top: 20, bottom: 20 }}
-          />
-          {/* <Tooltip
+    <Suspense>
+      <section className={cn(className, "")}>
+        <ResponsiveContainer width="95%" height={600}>
+          <BarChart
+            data={chartData}
+            layout="vertical"
+            barCategoryGap={20} // Space between categories
+          >
+            <CartesianGrid strokeDasharray="1 5" />
+            <XAxis type="number" domain={[0, 70000]} tickCount={8} />
+            <YAxis
+              dataKey="name"
+              type="category"
+              padding={{ top: 20, bottom: 20 }}
+            />
+            {/* <Tooltip
             contentStyle={{ backgroundColor: "blue", color: "yellow" }} // Dark background with white text
             cursor={{ fill: "rgba(255, 0, 0, 0.1)" }}
           /> */}
-          <Legend />
+            <Legend />
 
-          <Bar dataKey="value" onMouseOut={handleMouseLeave}>
-            {chartData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={index === activeIndex ? "red" : "#82ca9d"}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onClick={() => {
-                  router.push(
-                    `/category-chart/category?category=${entry.name}`
-                  );
-                  // console.log(entry);
-                }}
-              />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
-    </section>
+            <Bar dataKey="value" onMouseOut={handleMouseLeave}>
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={index === activeIndex ? "red" : "#82ca9d"}
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onClick={() => {
+                    router.push(
+                      `/category-chart/category?category=${entry.name}`
+                    );
+                    // console.log(entry);
+                  }}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </section>
+    </Suspense>
   );
 }
 
