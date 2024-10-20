@@ -34,7 +34,7 @@ To run the application locally, follow these steps:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/07kundan/moonshot-assignment-1
+   git clone https://github.com/07kundan/moonshot-assignment-2
    cd <project name>
    ```
 
