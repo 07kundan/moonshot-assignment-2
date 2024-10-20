@@ -90,16 +90,16 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </section>
 
         {preferences && (
-          <section className="absolute bottom-0 right-0 w-full flex justify-around md:block md:w-fit md:bottom-6 md:right-6 bg-[#577B8D] py-3 px-5 space-x-3 ">
+          <section className="absolute bottom-0 right-0 w-full flex justify-around md:block md:w-fit md:bottom-6 md:right-6 bg-[#577B8D] py-3 px-5 space-x-3 rounded-lg">
             <Button
-              className="text-xs bg-[#344C64] hover:bg-[#233548] border border-[#172637] font-bold text-[#57A6A1]"
+              className="text-xs bg-[#5b82a8] hover:bg-[#3d5d80] border border-[#172637] font-bold text-[#57A6A1]"
               variant="outline"
               onClick={applyPreferences}
             >
               Apply Preferences
             </Button>
             <Button
-              className="text-xs bg-[#344C64] hover:bg-[#233548] border border-[#172637] font-bold text-[#57A6A1]"
+              className="text-xs bg-[#5b82a8] hover:bg-[#3d5d80] border border-[#172637] font-bold text-[#57A6A1]"
               variant="outline"
               onClick={resetPreferences}
             >

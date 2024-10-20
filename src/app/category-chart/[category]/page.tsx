@@ -79,7 +79,7 @@ function Page() {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="value" stroke="#8884d8" />
+          <Line type="monotone" dataKey="value" stroke="#57A6A1" />
         </LineChart>
       </ResponsiveContainer>
     </section>
